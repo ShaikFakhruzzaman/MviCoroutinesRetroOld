@@ -1,6 +1,7 @@
 package com.example.mvicoroutinesretroold.ui.main.view.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.mvicoroutinesretroold.ui.data.repository.MainRepository
 import com.example.mvicoroutinesretroold.ui.main.view.mainintent.MainIntent
@@ -14,22 +15,27 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
 
-    val userIntent = Channel<MainIntent>()
+//    val userIntent = Channel<MainIntent>(MainIntent.FetchUser)
     private val _state = MutableStateFlow<MainState>(MainState.Idle)
     val state: StateFlow<MainState>
         get() = _state
 
     init {
-        handleIntent()
+//        viewModelScope.launch {
+//            userIntent.send(MainIntent.FetchUser)
+//        }
+//        handleIntent()
     }
 
     public fun handleIntent() {
         viewModelScope.launch {
-            userIntent.consumeAsFlow().collect{
-                when (it) {
-                    MainIntent.FetchUser -> fetchUser()
-                }
-            }
+//            userIntent.send(MainIntent.FetchUser)
+//            userIntent.consumeAsFlow().collect{
+//                when (it) {
+//                    MainIntent.FetchUser ->
+                        fetchUser()
+//                }
+//            }
         }
     }
 
@@ -37,9 +43,9 @@ class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
         viewModelScope.launch {
             _state.value = MainState.Loading
             _state.value = try {
-                MainState.Users(mainRepository.getUsers())
+                MainState.Success(mainRepository.getUsers())
             } catch (e: Exception) {
-                MainState.Error(e.localizedMessage)
+                MainState.Failure(e.localizedMessage)
             }
         }
 
