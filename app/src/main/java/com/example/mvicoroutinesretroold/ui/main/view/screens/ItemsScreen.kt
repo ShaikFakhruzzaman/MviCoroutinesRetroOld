@@ -62,7 +62,7 @@ fun ItemsScreen(
         onResume = { Log.d("zama", "lifecycle...onResume") }
     )
 
-    state.onSuccess {
+    state.onSuccess { list ->
         Log.d("zama", "...onSuccess")
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -70,7 +70,7 @@ fun ItemsScreen(
             horizontalAlignment = Alignment.Start,
         ) {
             Log.d("zama", "LazyColumn ...outside")
-            items(it) { item ->
+            items(list) { item ->
                 Log.d("zama", "LazyColumn .... inside")
                 Box(
                     modifier = Modifier
@@ -100,8 +100,8 @@ fun ItemsScreen(
             }
         }
 //        Log.d("zama", "${it.size}")
-    }.onFailure {
-        Log.d("zama", "onFailure $it")
+    }.onFailure { error ->
+        Log.d("zama", "onFailure $error")
     }
 
 

@@ -9,8 +9,8 @@ import androidx.lifecycle.LifecycleOwner
 @Composable
 fun PerformOnLifeCycle(
     lifecycleOwner: LifecycleOwner,
-    onStart: ()->Unit = { },
-    onResume: ()->Unit = { }
+    onStart: ()->Unit ,
+    onResume: ()->Unit
     ){
 
     DisposableEffect(lifecycleOwner) {
